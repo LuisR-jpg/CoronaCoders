@@ -9,6 +9,7 @@ void build() {  // build the tree
     t[i] = t[i<<1] + t[i<<1|1];
 }
 
+//Update single, query range
 void modify(int p, int value) {  // set value at position p
   for (t[p += n] = value; p > 1; p >>= 1)
     t[p>>1] = t[p] + t[p^1];
@@ -20,6 +21,19 @@ int query(int l, int r) {  // sum on interval [l, r)
     if (l&1) res += t[l++];
     if (r&1) res += t[--r];
   }
+  return res;
+}
+//Update range, query single
+fy(int l, int r, int value) {
+  for (l += n, r += n; l < r; l >>= 1, r >>= 1) {
+    if (l&1) t[l++] += value;
+    if (r&1) t[--r] += value;
+  }
+}
+
+int query(int p) {
+  int res = 0;
+  for (p += n; p > 0; p >>= 1) res += t[p];
   return res;
 }
 
